@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hap</title>
+    <style>
+      :root { color-scheme: light dark; --ink: #1b1f1c; --muted: #5b625d;
+        --accent: #256241; --bg: #ffffff; --note: #fff4dc; }
+      @media (prefers-color-scheme: dark) {
+        :root { --ink: #eef1ee; --muted: #a9b1ab; --accent: #7cc49b;
+          --bg: #121513; --note: #2e2816; }
+      }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+        font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif; }
+      main { max-width: 680px; margin: 0 auto; padding: 40px 16px 64px; }
+      h1 { font-size: 32px; margin: 0 0 8px; }
+      h2 { font-size: 20px; margin: 32px 0 8px; }
+      p { margin: 0 0 12px; }
+      .muted { color: var(--muted); font-size: 15px; }
+      .important { background: var(--note); border-radius: 16px;
+        padding: 4px 18px 6px; margin-top: 24px; }
+      .important h2 { margin-top: 16px; }
+      a { color: var(--accent); overflow-wrap: anywhere; }
+      nav { margin-bottom: 24px; font-size: 15px; }
+    </style>
+  </head>
+  <body>
+    <main>
+    <h1>Hap</h1>
+    <p>A food diary for South Africa. Questions: <a href="mailto:hapapp.za@gmail.com">hapapp.za@gmail.com</a>.</p>
+    <ul>
+      <li><a href="privacy.html">Privacy policy</a></li>
+      <li><a href="terms.html">Terms of use</a></li>
+      <li><a href="food-data.html">Food data</a></li>
+    </ul>
+    </main>
+  </body>
+</html>
