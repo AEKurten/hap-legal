@@ -35,6 +35,7 @@
     <h2>In short</h2>
     <p>Your diary is stored on your phone. Hap works without an account, and then no one but you can see your diary.</p>
     <p>If you sign in, Hap backs your diary up so you can restore it or use it on another phone. A food diary and weight are health information, so Hap asks for your consent first.</p>
+    <p>If you share a food you created, other Hap users can find it once it has been checked, but they don't see who shared it.</p>
     <p>There are no ads, no analytics and no tracking. Your information is never sold or shared for marketing.</p>
     <h2>Who is responsible</h2>
     <p>Hap is made by Aubrey Kurten, an individual developer in South Africa, who is the responsible party for your personal information under POPIA and Hap's information officer.</p>
@@ -49,6 +50,11 @@
     <h2>Searching and scanning</h2>
     <p>What you search for and the barcodes you scan are sent to Hap's food catalog and to Open Food Facts to find matching foods. They aren't linked to your account. Hap keeps no history of your searches, though the server's short-lived logs may record barcodes looked up.</p>
     <p>Open Food Facts is an independent non-profit in France. It receives these requests directly, can see your IP address, and its own privacy policy applies to them.</p>
+    <h2>Foods you share</h2>
+    <p>If you're signed in and choose to share a food you created after a scan found nothing, Hap stores its barcode, name, brand, serving and nutrition values on its server. Hap's developer checks each one before anyone else can find it. After that, anyone who scans that barcode in Hap sees it. Your name and email aren't shown with it.</p>
+    <p>Hap shares a food only when you choose to. It keeps your account ID with each food you share, to stop an account that misuses sharing (POPIA section 11(1)(f)). Please don't put personal information in a food you share.</p>
+    <p>If you report a shared food, Hap stores the reason, and your account ID if you're signed in, so that each account counts once.</p>
+    <p>Deleting your account removes your account ID from the foods you shared and the reports you made. The foods themselves stay, because other people may rely on them.</p>
     <h2>Camera, reminders and widgets</h2>
     <p>The camera is used only while the scanner is open, to read barcodes. No photos or video are saved or sent.</p>
     <p>Reminders are scheduled on your phone. The Today widget and the Live Activity read your diary on the phone.</p>
@@ -56,6 +62,7 @@
     <p>Supabase Inc. hosts Hap's backup, sign-in and food catalog, under a contract that requires it to protect your information and use it only to provide its service to Hap.</p>
     <p>Google (Gmail) delivers the sign-in emails, so it handles your email address and those messages.</p>
     <p>Apple distributes Hap through the App Store, under Apple's own privacy policy.</p>
+    <p>ntfy.sh delivers a notification to Hap's developer for each shared food or report to review. It receives the food's details, but never who shared or reported it.</p>
     <p>Hap shares your information with no one else, unless the law requires it, for example under a court order.</p>
     <h2>Where it is stored</h2>
     <p>The backup is stored in Ireland, in the European Union. EU law (the GDPR) protects personal information at least as well as POPIA, as POPIA section 72 requires for a transfer abroad. Your consent when you sign in also covers this transfer.</p>
@@ -63,6 +70,7 @@
     <p>On your phone: until you delete it, or the app.</p>
     <p>In the backup: until you delete your account. That removes your account and backup from the server straight away; copies in the hosting provider's routine backups are deleted automatically as those backups expire.</p>
     <p>Technical logs: a few days.</p>
+    <p>Foods you share: until Hap removes them. Your account ID is removed from them when you delete your account.</p>
     <h2>Keeping it safe</h2>
     <p>Your information travels encrypted (HTTPS), and the backup is encrypted where it is stored. The server lets each account read and change only its own information. Hap's developer reaches the database only to run and repair the service.</p>
     <p>If a security breach affects your information, Hap will tell you and the Information Regulator as soon as reasonably possible, as POPIA section 22 requires.</p>

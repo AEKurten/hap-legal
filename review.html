@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <meta name="referrer" content="no-referrer">
+    <title>Review a shared food</title>
+    <!--
+      Opened from the ntfy push for a food a Hap user shared
+      (supabase/migrations/*_shared_foods.sql, docs/moderation.md). The
+      food id and its review token come in the URL fragment, which never
+      reaches GitHub's servers. Everything shown is typed by app users, so
+      it's only ever set as text.
+    -->
+    <style>
+      :root { color-scheme: light dark; --ink: #1b1f1c; --muted: #5b625d;
+        --accent: #256241; --bg: #ffffff; --note: #fff4dc; --line: #e3e7e4;
+        --danger: #a8322d; }
+      @media (prefers-color-scheme: dark) {
+        :root { --ink: #eef1ee; --muted: #a9b1ab; --accent: #7cc49b;
+          --bg: #121513; --note: #2e2816; --line: #2a302c; --danger: #f08a84; }
+      }
+      body { margin: 0; background: var(--bg); color: var(--ink);
+        font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, sans-serif; }
+      main { max-width: 680px; margin: 0 auto; padding: 32px 16px 64px; }
+      h1 { font-size: 28px; line-height: 1.2; margin: 0 0 4px; }
+      p { margin: 0 0 12px; }
+      .muted { color: var(--muted); font-size: 15px; }
+      .note { background: var(--note); border-radius: 16px; padding: 12px 16px;
+        margin: 16px 0; }
+      .status { display: inline-block; border-radius: 999px; padding: 2px 12px;
+        font-size: 14px; font-weight: 600; border: 1.5px solid var(--line);
+        margin: 8px 0 16px; }
+      table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; }
+      td { padding: 8px 0; border-bottom: 1px solid var(--line); }
+      td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+      .actions { display: grid; gap: 12px; margin-top: 24px; }
+      button { font: inherit; font-weight: 600; border-radius: 999px;
+        min-height: 48px; padding: 0 20px; cursor: pointer;
+        border: 1.5px solid var(--line); background: transparent; color: var(--ink); }
+      button.approve { background: var(--accent); border-color: var(--accent);
+        color: var(--bg); }
+      button.block { color: var(--danger); }
+      button:disabled { opacity: 0.5; cursor: default; }
+      a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <main id="page">
+      <p class="muted">Loading…</p>
+    </main>
+    <script>
+      const api = 'https://yrazonbvsywvgjheuoac.supabase.co/rest/v1/rpc/';
+      // The publishable key, which ships in the app too.
+      const key = 'sb_publishable_DYAdsCcjLf9G_oVKN11koQ_UzTisOl_';
+      const args = new URLSearchParams(location.hash.slice(1));
+      const food = args.get('food');
+      const token = args.get('token');
+      const page = document.getElementById('page');
+
+      async function rpc(name, body) {
+        const response = await fetch(api + name, {
+          method: 'POST',
+          headers: { apikey: key, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await response.json().catch(() => null);
+        if (!response.ok) throw new Error(data?.message ?? 'Status ' + response.status);
+        return data;
+      }
+
+      function el(tag, text, className) {
+        const node = document.createElement(tag);
+        if (text != null) node.textContent = text;
+        if (className) node.className = className;
+        return node;
+      }
+
+      const number = (v, digits = 1) => v == null ? '–'
+        : Number(v).toLocaleString('en-ZA', { maximumFractionDigits: digits });
+
+      // Protein and carbs give about 4 kcal a gram, fat 9. Fibre, alcohol
+      // and rounding on the label explain small differences.
+      function energyCheck(f) {
+        if (f.proteinG == null || f.carbsG == null || f.fatG == null) {
+          return "Not every macro was given, so the energy can't be checked.";
+        }
+        if (f.proteinG + f.carbsG + f.fatG > 100) {
+          return 'Protein, carbs and fat add up to more than 100 g.';
+        }
+        const macros = 4 * f.proteinG + 4 * f.carbsG + 9 * f.fatG;
+        if (f.energyKcal === 0) return `The macros make ${number(macros, 0)} kcal; the energy given is 0.`;
+        const off = Math.round(Math.abs(macros - f.energyKcal) / f.energyKcal * 100);
+        return `The macros make ${number(macros, 0)} kcal, ${off}% ` +
+          `${macros >= f.energyKcal ? 'over' : 'under'} the energy given.`;
+      }
+
+      const statusLabel = {
+        pending: 'Waiting for review',
+        approved: 'Approved: anyone who scans it finds it',
+        rejected: 'Rejected: nobody else sees it',
+      };
+
+      function render(f, message) {
+        page.replaceChildren();
+        const unit = f.basis === 'per100ml' ? 'ml' : 'g';
+        page.append(el('h1', f.name));
+        page.append(el('p', [f.brand, 'Barcode ' + f.barcode].filter(Boolean).join(' · '), 'muted'));
+        page.append(el('span', statusLabel[f.status] ?? f.status, 'status'));
+        if (message) page.append(el('div', message, 'note'));
+
+        const table = el('table');
+        for (const [label, value] of [
+          ['Energy per 100 ' + unit, number(f.energyKcal, 0) + ' kcal'],
+          ['Protein', f.proteinG == null ? '–' : number(f.proteinG) + ' g'],
+          ['Carbs', f.carbsG == null ? '–' : number(f.carbsG) + ' g'],
+          ['Fat', f.fatG == null ? '–' : number(f.fatG) + ' g'],
+          ['One serving', f.servingSize == null ? '–' : number(f.servingSize) + ' ' + unit],
+        ]) {
+          const row = el('tr');
+          row.append(el('td', label), el('td', value));
+          table.append(row);
+        }
+        page.append(table);
+        page.append(el('p', energyCheck(f)));
+
+        if (f.flaggedWords.length) {
+          page.append(el('div', 'Flagged words: ' + f.flaggedWords.join(', '), 'note'));
+        }
+        const reports = Object.entries(f.reports);
+        if (reports.length) {
+          const names = { wrongValues: 'wrong values', offensive: 'offensive name', other: 'something else' };
+          page.append(el('div', 'Open reports: ' +
+            reports.map(([reason, n]) => `${n} × ${names[reason] ?? reason}`).join(', '), 'note'));
+        }
+        const h = f.history;
+        page.append(el('p', `Shared before by this account: ${h.approved} approved, ` +
+          `${h.rejected} rejected, ${h.pending} waiting.` +
+          (f.blocked ? ' This account is blocked from sharing.' : ''), 'muted'));
+
+        const look = el('p', 'Look it up: ', 'muted');
+        const off = el('a', 'Open Food Facts');
+        off.href = 'https://world.openfoodfacts.org/product/' + encodeURIComponent(f.barcode);
+        const web = el('a', 'web search');
+        web.href = 'https://duckduckgo.com/?q=' + encodeURIComponent(f.barcode);
+        for (const a of [off, web]) { a.target = '_blank'; a.rel = 'noreferrer'; }
+        look.append(off, ' · ', web);
+        page.append(look);
+
+        const actions = el('div', null, 'actions');
+        const choices = [
+          ['approve', f.status === 'approved' ? 'Keep it' : 'Approve', 'approve'],
+          ['reject', f.status === 'rejected' ? 'Rejected' : 'Reject', ''],
+          ['block', 'Reject and block this account', 'block'],
+        ];
+        for (const [decision, label, className] of choices) {
+          const button = el('button', label, className);
+          button.disabled = (decision === 'reject' && f.status === 'rejected') ||
+            (decision === 'block' && f.blocked);
+          button.addEventListener('click', () => decide(decision, actions));
+          actions.append(button);
+        }
+        page.append(actions);
+      }
+
+      async function decide(decision, actions) {
+        if (decision === 'block' && !confirm(
+          "Reject this food and everything else this account has waiting, and stop it sharing?")) {
+          return;
+        }
+        for (const b of actions.querySelectorAll('button')) b.disabled = true;
+        try {
+          await rpc('moderate_shared_food', { food, token, decision });
+          const done = { approve: 'Approved.', reject: 'Rejected.', block: 'Rejected, and the account is blocked.' };
+          render(await rpc('review_shared_food', { food, token }), done[decision]);
+        } catch (e) {
+          render(await rpc('review_shared_food', { food, token }), "That didn't work: " + e.message);
+        }
+      }
+
+      async function start() {
+        if (!food || !token) {
+          page.replaceChildren(el('p', 'Open this page from a review notification.'));
+          return;
+        }
+        try {
+          const f = await rpc('review_shared_food', { food, token });
+          if (!f) {
+            page.replaceChildren(el('p', "This link doesn't match a shared food."));
+            return;
+          }
+          render(f);
+        } catch (e) {
+          page.replaceChildren(el('p', "Couldn't load the food: " + e.message));
+        }
+      }
+      start();
+    </script>
+  </body>
+</html>
