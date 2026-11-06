@@ -31,12 +31,14 @@
     <nav><a href="./">Hap</a></nav>
     <h1>Food data</h1>
     <p>Where the nutrition values in Hap come from, and under what terms.</p>
-    <p class="muted">Updated 5 November 2026</p>
+    <p class="muted">Updated 6 November 2026</p>
     <h2>Sources</h2>
     <p>USDA FoodData Central, from the U.S. Department of Agriculture, Agricultural Research Service: generic foods. Public domain.</p>
     <p>Open Food Facts (<a href="https://openfoodfacts.org">openfoodfacts.org</a>), from its contributors: packaged products and barcodes. The database is available under the Open Database License (ODbL) 1.0, and its contents under the Database Contents License (DbCL) 1.0.</p>
     <p>Hap users: products they shared after a scan found nothing, or whose missing or wrong values they corrected. Hap's developer checks each one before it can be found.</p>
     <p>Hap: where a source has no value, Hap fills it in from a matching USDA entry, works it out from the source's own values, reads it from the label photo on Open Food Facts, or estimates it from typical values for that kind of food. Where a source value is clearly wrong, such as kilojoules entered as kilocalories, Hap corrects it or leaves it out. The app shows which values Hap filled in or corrected, how, and what the source said, and marks estimates as estimates.</p>
+    <p>Hap also lists common foods under plain names, each linked to one USDA entry whose values it uses, with typical portion sizes chosen by Hap. The app shows the name USDA lists. Portion sizes are typical, not measured.</p>
+    <p>You: a recipe's values are worked out from the ingredients, amounts and cooked weight you enter, so they are only as exact as those.</p>
     <h2>How Hap's catalog is made</h2>
     <p>Hap's food catalog combines USDA FoodData Central with the Open Food Facts products tagged as sold in South Africa. That part is a derivative database under the ODbL, and it is offered under the ODbL too.</p>
     <p>It is made from the Open Food Facts CSV export by the script at <a href="https://aekurten.github.io/hap-legal/off.py">https://aekurten.github.io/hap-legal/off.py</a>. The script keeps products tagged en:south-africa that have a barcode and a name; takes the name, first brand, quantity, and the energy and nutrients per 100 g or 100 ml; converts energy given only in kilojoules to kilocalories; and leaves missing values empty. The app then sets aside energy values no food can have, rather than showing them. Values Hap filled in are kept apart from the source data and added only where it has none. Corrections are kept apart too, and each one applies only while the source still has the value it corrects.</p>
