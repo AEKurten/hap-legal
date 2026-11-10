@@ -31,11 +31,12 @@
     <nav><a href="./">Hap</a></nav>
     <h1>Privacy policy</h1>
     <p>What personal information Hap handles, why, and your rights under South Africa's Protection of Personal Information Act, 2013 (POPIA).</p>
-    <p class="muted">Updated 6 November 2026</p>
+    <p class="muted">Updated 10 November 2026</p>
     <h2>In short</h2>
     <p>Your diary is stored on your phone. Hap works without an account, and then no one but you can see your diary.</p>
     <p>If you sign in, Hap backs your diary up so you can restore it or use it on another phone. A food diary and weight are health information, so Hap asks for your consent first.</p>
     <p>If you share a food you created, other Hap users can find it once it has been checked, but they don't see who shared it.</p>
+    <p>If you log a meal from a photo, the photo is sent to Claude, an AI from Anthropic, to suggest what's in it. Hap doesn't keep it.</p>
     <p>There are no ads, no analytics and no tracking. Your information is never sold or shared for marketing.</p>
     <h2>Who is responsible</h2>
     <p>Hap is made by Aubrey Kurten, an individual developer in South Africa, who is the responsible party for your personal information under POPIA and Hap's information officer.</p>
@@ -55,21 +56,29 @@
     <p>Hap shares a food only when you choose to. It keeps your account ID with each food you share, to stop an account that misuses sharing (POPIA section 11(1)(f)). Please don't put personal information in a food you share.</p>
     <p>If you report a food, Hap stores the reason, the food as Hap showed it, and your account ID if you're signed in, so that each account counts once.</p>
     <p>Deleting your account removes your account ID from the foods you shared and the reports you made. The foods themselves stay, because other people may rely on them.</p>
+    <h2>Meal photos</h2>
+    <p>If you're signed in and choose to log a meal from a photo, Hap sends that photo through its server to Anthropic, which runs the Claude AI, to suggest the foods in it and how much. The suggestion comes back to your phone for you to check and change. Neither Hap nor its server keeps the photo or the suggestion; only what you log is stored, like any other entry.</p>
+    <p>A photo can show more than food, such as your hands, other people or your home. Please photograph only the food.</p>
+    <p>Hap counts how many photos each account sends in a day, to keep the cost of the service down, and keeps that count for two days.</p>
+    <p>You choose each photo that is sent, after Hap tells you where it goes; that is your consent (POPIA section 11(1)(a)).</p>
     <h2>Camera, reminders and widgets</h2>
-    <p>The camera is used only while the scanner is open, to read barcodes. No photos or video are saved or sent.</p>
+    <p>The camera is used while the scanner is open, to read barcodes, and when you choose to take a meal photo. Scanning saves and sends no photos or video. If you choose a meal photo from your library instead, Hap reads only that photo.</p>
     <p>Reminders are scheduled on your phone. The Today widget and the Live Activity read your diary on the phone.</p>
     <h2>Who else handles your information</h2>
     <p>Supabase Inc. hosts Hap's backup, sign-in and food catalog, under a contract that requires it to protect your information and use it only to provide its service to Hap.</p>
     <p>Google (Gmail) delivers the sign-in emails, so it handles your email address and those messages.</p>
     <p>Apple distributes Hap through the App Store, under Apple's own privacy policy.</p>
     <p>ntfy.sh delivers a notification to Hap's developer for each shared food or report to review. It receives the food's details, but never who shared or reported it.</p>
+    <p>Anthropic PBC, in the United States, runs the Claude AI that reads the meal photos you choose to send. It receives the photo but not your email or account, uses it only to answer the request, and under its commercial terms doesn't train its models on it. It may keep requests for a limited time to detect misuse.</p>
     <p>Hap shares your information with no one else, unless the law requires it, for example under a court order.</p>
     <h2>Where it is stored</h2>
     <p>The backup is stored in Ireland, in the European Union. EU law (the GDPR) protects personal information at least as well as POPIA, as POPIA section 72 requires for a transfer abroad. Your consent when you sign in also covers this transfer.</p>
+    <p>Meal photos you choose to send are processed by Anthropic in the United States. Hap tells you this before you send one, and sending it is your consent to the transfer (POPIA section 72(1)(b)). Anthropic's terms also bind it to protect them.</p>
     <h2>How long it is kept</h2>
     <p>On your phone: until you delete it, or the app.</p>
     <p>In the backup: until you delete your account. That removes your account and backup from the server straight away; copies in the hosting provider's routine backups are deleted automatically as those backups expire.</p>
     <p>Technical logs: a few days.</p>
+    <p>Meal photos: not kept by Hap. The count of photos sent: two days.</p>
     <p>Foods you share: until Hap removes them. Your account ID is removed from them when you delete your account.</p>
     <h2>Keeping it safe</h2>
     <p>Your information travels encrypted (HTTPS), and the backup is encrypted where it is stored. The server lets each account read and change only its own information. Hap's developer reaches the database only to run and repair the service.</p>
